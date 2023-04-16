@@ -5,11 +5,14 @@
 #include <iostream>
 #include <ncursesw/ncurses.h>
 #include <unistd.h>
+#include "app.hpp"
+
 #define SLEEP(ms) usleep(ms)
 
 #define DELAY 200
 
 using namespace std;
+using namespace BefungePlusPlus;
 
 void quit();
 void printHelp();
@@ -23,10 +26,11 @@ void printHelp();
  */
 int main(int argc, const char *argv[])
 {
+    App* app = new App();
 
     // Init Curses ----------
     setlocale(LC_ALL, "");
-    WINDOW *win = initscr();
+    WINDOW* win = initscr();
     atexit(quit);
     curs_set(0);
     start_color();
@@ -35,9 +39,19 @@ int main(int argc, const char *argv[])
     cbreak();
     keypad(stdscr, true);
     // mousemask(BUTTON1_CLICKED, NULL); //ALL_MOUSE_EVENTS, NULL);
-    // app::Init();
+    app->Init(win);
+
+    app->Draw();
+
+    getch();
 
     return 0;
+}
+
+void printHelp() {}
+
+void quit() {
+  endwin();
 }
 
 #endif
