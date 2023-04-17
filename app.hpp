@@ -5,6 +5,7 @@
 #include <ncursesw/ncurses.h>
 #include "codeview.hpp"
 #include "terminalview.hpp"
+#include "lineview.hpp"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ namespace BefungePlusPlus
       int cols, rows;
       CodeView* codeView;
       TerminalView* termView;
+      LineView* lineView;
 
     public:
       float borderPos;

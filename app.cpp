@@ -7,7 +7,7 @@ using namespace std;
 using namespace BefungePlusPlus;
 
 App::App() {
-  this->borderPos = 0.5;
+  this->borderPos = 0.75;
   this->horizontal = true;
   this->showCode = true;
   this->editMode = false;
@@ -28,6 +28,7 @@ void App::Init(WINDOW* win) {
   this->win = win;
   this->codeView = new CodeView();
   this->termView = new TerminalView();
+  this->lineView = new LineView();
 }
 
 void App::Draw() {
@@ -38,11 +39,12 @@ void App::Draw() {
     return;
   }
 
-  int line;
+  if (this->borderPos > 1) this->borderPos = 1;
 
   if (this->horizontal) {
     if (this->showCode) {
-      line = (this->rows - 1) * this->borderPos;
+      int line = (this->rows - 1) * this->borderPos;
+      if (line <= 0) line = 1;
 
       this->codeView->bounds->X(0);
       this->codeView->bounds->Y(0);
@@ -54,7 +56,10 @@ void App::Draw() {
       this->termView->bounds->Height(this->rows - 1 - line);
       this->termView->bounds->Width(this->cols);
 
-      line += 1;
+      this->lineView->bounds->X(0);
+      this->lineView->bounds->Y(line);
+      this->lineView->bounds->Height(1);
+      this->lineView->bounds->Width(this->cols);
 
     } else {
       this->codeView->bounds->X(0);
@@ -67,11 +72,15 @@ void App::Draw() {
       this->termView->bounds->Height(this->rows - 1);
       this->termView->bounds->Width(this->cols);
 
-      line = 0;
+      this->lineView->bounds->X(0);
+      this->lineView->bounds->Y(0);
+      this->lineView->bounds->Height(1);
+      this->lineView->bounds->Width(this->cols);
     }
   } else {
     if (this->showCode) {
-      line = (this->cols - 1) * this->borderPos;
+      int line = (this->cols - 1) * this->borderPos;
+      if (line <= 0) line = 1;
 
       this->codeView->bounds->X(0);
       this->codeView->bounds->Y(0);
@@ -83,7 +92,10 @@ void App::Draw() {
       this->termView->bounds->Height(this->rows);
       this->termView->bounds->Width(this->cols - 1 - line);
 
-      line += 1;
+      this->lineView->bounds->X(line);
+      this->lineView->bounds->Y(0);
+      this->lineView->bounds->Height(this->rows);
+      this->lineView->bounds->Width(1);
 
     } else {
       this->codeView->bounds->X(0);
@@ -96,14 +108,23 @@ void App::Draw() {
       this->termView->bounds->Height(this->rows);
       this->termView->bounds->Width(this->cols - 1);
 
-      line = 0;
+      this->lineView->bounds->X(0);
+      this->lineView->bounds->Y(0);
+      this->lineView->bounds->Height(this->rows);
+      this->lineView->bounds->Width(1);
     }
   }
 
-  this->codeView->Update();
+  if (this->showCode) {
+    this->codeView->Update();
+  }
+  this->lineView->Update();
   this->termView->Update();
 
-  this->codeView->Draw();
+  if (this->showCode) {
+    this->codeView->Draw();
+  }
+  this->lineView->Draw();
   this->termView->Draw();
 
   update_panels();
