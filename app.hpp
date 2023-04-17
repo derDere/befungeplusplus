@@ -3,6 +3,8 @@
 
 #include <string>
 #include <ncursesw/ncurses.h>
+#include "codeview.hpp"
+#include "terminalview.hpp"
 
 using namespace std;
 
@@ -13,6 +15,8 @@ namespace BefungePlusPlus
     private:
       WINDOW* win;
       int cols, rows;
+      CodeView* codeView;
+      TerminalView* termView;
 
     public:
       float borderPos;

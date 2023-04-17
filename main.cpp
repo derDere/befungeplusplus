@@ -26,26 +26,29 @@ void printHelp();
  */
 int main(int argc, const char *argv[])
 {
-    App* app = new App();
+  App* app = new App();
 
-    // Init Curses ----------
-    setlocale(LC_ALL, "");
-    WINDOW* win = initscr();
-    atexit(quit);
-    curs_set(0);
-    start_color();
-    clear();
-    noecho();
-    cbreak();
-    keypad(stdscr, true);
-    // mousemask(BUTTON1_CLICKED, NULL); //ALL_MOUSE_EVENTS, NULL);
-    app->Init(win);
+  // Init Curses ----------
+  setlocale(LC_ALL, "");
+  WINDOW* win = initscr();
+  atexit(quit);
+  curs_set(0);
+  start_color();
+  clear();
+  noecho();
+  cbreak();
+  keypad(stdscr, true);
+  // mousemask(BUTTON1_CLICKED, NULL); //ALL_MOUSE_EVENTS, NULL);
 
+  app->Init(win);
+
+  int input;
+  do {
     app->Draw();
+    input = getch();
+  } while (input != 'q');
 
-    getch();
-
-    return 0;
+  return 0;
 }
 
 void printHelp() {}

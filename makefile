@@ -5,10 +5,10 @@ All: $(APP)
 	@echo Done
 
 $(APP): $(SRC)
-	g++ -o $(APP) $(SRC) -lncursesw -std=c++17
+	g++ -o $(APP) $(SRC) -lncursesw -lpanelw -std=c++17
 
 debug:
-	g++ -g -o $(APP) $(SRC) -lncursesw -std=c++17
+	g++ -g -o $(APP) $(SRC) -lncursesw -lpanelw -std=c++17
 	gdb -ex run $(APP)
 
 test: $(APP)

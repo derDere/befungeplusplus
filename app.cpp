@@ -26,25 +26,88 @@ App::~App() {
 
 void App::Init(WINDOW* win) {
   this->win = win;
+  this->codeView = new CodeView();
+  this->termView = new TerminalView();
 }
 
 void App::Draw() {
   getmaxyx(stdscr, this->rows, this->cols);
-  int line = this->rows * this->borderPos;
 
-  string LINE;
-  if (this->asciiMode) {
-    LINE = "-";
+  if (this->cols < 3 || this->rows < 3) {
+    clear();
+    return;
+  }
+
+  int line;
+
+  if (this->horizontal) {
+    if (this->showCode) {
+      line = (this->rows - 1) * this->borderPos;
+
+      this->codeView->bounds->X(0);
+      this->codeView->bounds->Y(0);
+      this->codeView->bounds->Height(line);
+      this->codeView->bounds->Width(this->cols);
+
+      this->termView->bounds->X(0);
+      this->termView->bounds->Y(line + 1);
+      this->termView->bounds->Height(this->rows - 1 - line);
+      this->termView->bounds->Width(this->cols);
+
+      line += 1;
+
+    } else {
+      this->codeView->bounds->X(0);
+      this->codeView->bounds->Y(0);
+      this->codeView->bounds->Height(0);
+      this->codeView->bounds->Width(this->cols);
+
+      this->termView->bounds->X(0);
+      this->termView->bounds->Y(1);
+      this->termView->bounds->Height(this->rows - 1);
+      this->termView->bounds->Width(this->cols);
+
+      line = 0;
+    }
   } else {
-    LINE = "─";
+    if (this->showCode) {
+      line = (this->cols - 1) * this->borderPos;
+
+      this->codeView->bounds->X(0);
+      this->codeView->bounds->Y(0);
+      this->codeView->bounds->Height(this->rows);
+      this->codeView->bounds->Width(line);
+
+      this->termView->bounds->X(line + 1);
+      this->termView->bounds->Y(0);
+      this->termView->bounds->Height(this->rows);
+      this->termView->bounds->Width(this->cols - 1 - line);
+
+      line += 1;
+
+    } else {
+      this->codeView->bounds->X(0);
+      this->codeView->bounds->Y(0);
+      this->codeView->bounds->Height(this->rows);
+      this->codeView->bounds->Width(0);
+
+      this->termView->bounds->X(1);
+      this->termView->bounds->Y(0);
+      this->termView->bounds->Height(this->rows);
+      this->termView->bounds->Width(this->cols - 1);
+
+      line = 0;
+    }
   }
 
-  clear();
+  this->codeView->Update();
+  this->termView->Update();
 
-  mvaddstr(line + 1, 0, LINE.c_str());
-  for(int i = 1; i < cols; i++) {
-    addstr(LINE.c_str());
-  }
+  this->codeView->Draw();
+  this->termView->Draw();
+
+  update_panels();
+  doupdate();
 }
 
 #endif
