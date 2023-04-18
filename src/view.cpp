@@ -37,4 +37,12 @@ void View::Reposition() {
   move_panel(this->pan, this->bounds->Y(), this->bounds->X());
 }
 
+void View::Show() {
+  show_panel(this->pan);
+}
+
+void View::Hide() {
+  hide_panel(this->pan);
+}
+
 #endif

@@ -54,5 +54,16 @@ void Point::MvRight() {
   this->Mv(RIGHT);
 }
 
+bool Point::is(int x, int y) {
+  return ((this->_x == x) && (this->_y == y));
+}
+
+long Point::Value() const {
+  return (((long)this->_x) << 16) | this->_y;
+}
+
+bool PointCompare::operator()(const Point& a, const Point& b) const {
+  return a.Value() < b.Value();
+}
 
 #endif

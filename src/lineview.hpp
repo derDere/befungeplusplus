@@ -1,19 +1,21 @@
-#ifndef TERMINALVIEW_HPP
-#define TERMINALVIEW_HPP
+#ifndef LINEVIEW_HPP
+#define LINEVIEW_HPP
 
 #include <string>
+
+#include "colors.hpp"
 #include "view.hpp"
 
 using namespace std;
 
-class TerminalView : public View {
+class LineView : public View {
 
   private:
     string code;
 
   public:
-    TerminalView();
-    ~TerminalView();
+    LineView();
+    ~LineView();
 
     void Draw();
     void Update();

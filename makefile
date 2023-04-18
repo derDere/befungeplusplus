@@ -1,4 +1,4 @@
-SRC = $(wildcard *.cpp)
+SRC = $(wildcard src/*.cpp)
 APP = "befunge++"
 
 All: $(APP)

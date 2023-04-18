@@ -1,19 +1,21 @@
-#ifndef LINEVIEW_HPP
-#define LINEVIEW_HPP
+#ifndef STACKVIEW_HPP
+#define STACKVIEW_HPP
 
 #include <string>
+
+#include "colors.hpp"
 #include "view.hpp"
 
 using namespace std;
 
-class LineView : public View {
+class StackView : public View {
 
   private:
     string code;
 
   public:
-    LineView();
-    ~LineView();
+    StackView();
+    ~StackView();
 
     void Draw();
     void Update();

@@ -19,6 +19,11 @@ class View {
     ~View();
 
     void Reposition();
+    void Show();
+    void Hide();
+
+    virtual void Draw() = 0;
+    virtual void Update() = 0;
 };
 
 #endif

@@ -33,6 +33,7 @@ int main(int argc, const char *argv[])
   WINDOW* win = initscr();
   atexit(quit);
   curs_set(0);
+  use_default_colors();
   start_color();
   clear();
   noecho();
@@ -46,6 +47,35 @@ int main(int argc, const char *argv[])
   do {
     app->Draw();
     input = getch();
+
+    switch (input)
+    {
+      case 'c':
+          app->showCode = !app->showCode;
+        break;
+      case 's':
+          app->showStack = !app->showStack;
+        break;
+      case 'l':
+          app->showLine = !app->showLine;
+        break;
+      case 't':
+          app->showTitle = !app->showTitle;
+        break;
+      case '+':
+          app->borderPos += 0.01;
+        break;
+      case '-':
+          app->borderPos -= 0.01;
+        break;
+      case 'h':
+          app->horizontal = true;
+        break;
+      case 'v':
+          app->horizontal = false;
+        break;
+    }
+
   } while (input != 'q');
 
   return 0;

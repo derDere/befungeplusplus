@@ -26,6 +26,16 @@ class Point {
     void MvLeft();
     void MvRight();
     void Mv(int, int);
+    bool is(int, int);
+
+    long Value() const;
+
+    bool operator==(const Point&);
+    bool operator<(const Point&);
+};
+
+struct PointCompare {
+  bool operator() (const Point&, const Point&) const;
 };
 
 #endif
