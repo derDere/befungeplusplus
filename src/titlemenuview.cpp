@@ -16,7 +16,7 @@ TitleMenuView::~TitleMenuView() {
 
 void TitleMenuView::Draw() {
   wbkgd(this->win, COLOR_PAIR(TITLE_COLOR_PAIR));
-  wclear(this->win);
+  //wclear(this->win);
   mvwaddstr(this->win, 0, 0, this->code.c_str());
 }
 

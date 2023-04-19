@@ -11,23 +11,25 @@ App::App() {
   this->runner = new Runner();
   this->editor = new Editor(this->matrix);
 
-  for(int x = 0; x < 160; x++) {
-    for(int y = 0; y < 80; y++) {
-      this->matrix->Set({x,y}, '.');
-    }
-  }
+  //for(int x = 0; x < 160; x++) {
+  //  for(int y = 0; y < 80; y++) {
+  //    this->matrix->Set({x,y}, '.');
+  //  }
+  //}
+  //
+  //this->matrix->Set({0,0}, '@');
+  //this->matrix->Set({1,1}, '^');
+  //this->matrix->Set({2,2}, '>');
+  //this->matrix->Set({3,3}, 'v');
+  //this->matrix->Set({4,4}, '<');
+  //this->matrix->Set({5,5}, '+');
+  //this->matrix->Set({6,6}, '-');
+  //this->matrix->Set({7,7}, '*');
+  //this->matrix->Set({8,8}, '/');
+  //
+  //this->matrix->Change({5,5}, '#');
 
-  this->matrix->Set({0,0}, '@');
-  this->matrix->Set({1,1}, '^');
-  this->matrix->Set({2,2}, '>');
-  this->matrix->Set({3,3}, 'v');
-  this->matrix->Set({4,4}, '<');
-  this->matrix->Set({5,5}, '+');
-  this->matrix->Set({6,6}, '-');
-  this->matrix->Set({7,7}, '*');
-  this->matrix->Set({8,8}, '/');
-
-  this->matrix->Change({5,5}, '#');
+  this->run = true;
 
   this->asciiMode = false;
   this->borderPos = 0.75;
@@ -39,11 +41,12 @@ App::App() {
   this->showTitle = true;
   this->ideMode = true;
 
-  this->editMode = false;
-  this->editStrMode = false;
+  this->editMode = !false;
 }
 
 App::~App() {
+  this->run = false;
+
   this->asciiMode = false;
   this->borderPos = 0;
   this->horizontal = false;
@@ -55,7 +58,6 @@ App::~App() {
   this->ideMode = false;
 
   this->editMode = false;
-  this->editStrMode = false;
 
   delete this->titleMenuView;
   delete this->codeView;
@@ -90,6 +92,12 @@ void App::Init(WINDOW* win) {
   this->stackView = new StackView();
   this->lineView = new LineView();
   this->termView = new TerminalView();
+}
+
+void App::Update(int input) {
+  if (this->editMode) {
+    this->editor->Inject(input);
+  }
 }
 
 void App::Draw() {

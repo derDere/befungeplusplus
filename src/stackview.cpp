@@ -16,7 +16,7 @@ StackView::~StackView() {
 
 void StackView::Draw() {
   wbkgd(this->win, COLOR_PAIR(STACK_COLOR_PAIR));
-  wclear(this->win);
+  //wclear(this->win);
   mvwaddstr(this->win, 0, 0, this->code.c_str());
 }
 

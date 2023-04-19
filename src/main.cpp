@@ -44,39 +44,11 @@ int main(int argc, const char *argv[])
   app->Init(win);
 
   int input;
-  do {
+  while (app->run) {
     app->Draw();
     input = getch();
-
-    switch (input)
-    {
-      case 'c':
-          app->showCode = !app->showCode;
-        break;
-      case 's':
-          app->showStack = !app->showStack;
-        break;
-      case 'l':
-          app->showLine = !app->showLine;
-        break;
-      case 't':
-          app->showTitle = !app->showTitle;
-        break;
-      case '+':
-          app->borderPos += 0.01;
-        break;
-      case '-':
-          app->borderPos -= 0.01;
-        break;
-      case 'h':
-          app->horizontal = true;
-        break;
-      case 'v':
-          app->horizontal = false;
-        break;
-    }
-
-  } while (input != 'q');
+    app->Update(input);
+  }
 
   return 0;
 }

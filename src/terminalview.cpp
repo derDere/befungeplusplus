@@ -15,8 +15,8 @@ TerminalView::~TerminalView() {
 }
 
 void TerminalView::Draw() {
-  wbkgd(this->win, COLOR_PAIR(TERMINAL_COLOR_PAIR));
-  wclear(this->win);
+  //wbkgd(this->win, COLOR_PAIR(TERMINAL_COLOR_PAIR));
+  //wclear(this->win);
   mvwaddstr(this->win, 0, 0, this->code.c_str());
 }
 

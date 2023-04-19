@@ -15,8 +15,11 @@ class CodeView : public View {
     Matrix* matrix;
     Editor* editor;
     Runner* runner;
+    Point* viewPoint;
 
   public:
+    bool showCross;
+
     CodeView(Matrix*, Editor*, Runner*);
     ~CodeView();
 

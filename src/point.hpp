@@ -26,7 +26,12 @@ class Point {
     void MvLeft();
     void MvRight();
     void Mv(int, int);
-    bool is(int, int);
+
+    void Set(int, int);
+    bool Is(int, int);
+
+    void Add(Point*);
+    void Sub(Point*);
 
     long Value() const;
 

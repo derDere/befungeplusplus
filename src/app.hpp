@@ -25,17 +25,18 @@ namespace BefungePlusPlus
       int cols, rows;
 
       TitleMenuView* titleMenuView;
-      CodeView* codeView;
       StackView* stackView;
       LineView* lineView;
       TerminalView* termView;
+      CodeView* codeView;
 
       Matrix* matrix;
       Runner* runner;
       Editor* editor;
 
-
     public:
+      bool run;
+
       bool asciiMode;
       float borderPos;
       bool horizontal;
@@ -47,12 +48,12 @@ namespace BefungePlusPlus
       bool ideMode;
 
       bool editMode;
-      bool editStrMode;
 
       App();
       ~App();
 
       void Init(WINDOW*);
+      void Update(int);
       void Draw();
   };
 }

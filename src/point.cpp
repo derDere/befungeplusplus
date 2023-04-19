@@ -54,12 +54,27 @@ void Point::MvRight() {
   this->Mv(RIGHT);
 }
 
-bool Point::is(int x, int y) {
+void Point::Set(int x,int y) {
+  this->_x = x;
+  this->_y = y;
+}
+
+void Point::Add(Point* additor) {
+  this->_x += additor->_x;
+  this->_y += additor->_y;
+}
+
+void Point::Sub(Point* additor) {
+  this->_x -= additor->_x;
+  this->_y -= additor->_y;
+}
+
+bool Point::Is(int x, int y) {
   return ((this->_x == x) && (this->_y == y));
 }
 
 long Point::Value() const {
-  return (((long)this->_x) << 16) | this->_y;
+  return (((unsigned long)this->_x) << 16) | ((unsigned long)this->_y);
 }
 
 bool PointCompare::operator()(const Point& a, const Point& b) const {
