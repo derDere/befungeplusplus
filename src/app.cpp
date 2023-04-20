@@ -72,18 +72,18 @@ App::~App() {
 
 void App::Init(WINDOW* win) {
 
-  init_pair(LINE_COLOR_PAIR,     COLOR_BLACK,   COLOR_WHITE);
-  init_pair(STACK_COLOR_PAIR,    COLOR_WHITE,   COLOR_BLACK);
-  init_pair(TITLE_COLOR_PAIR,    COLOR_BLACK,   COLOR_WHITE);
-  init_pair(TERMINAL_COLOR_PAIR, COLOR_WHITE,       -1     );
-  init_pair(CODE_COLOR_PAIR,     COLOR_WHITE,       -1     );
-  init_pair(CODE_CHANGE_PAIR,    COLOR_CYAN,        -1     );
-  init_pair(CODE_CMD_PAIR,       COLOR_YELLOW,      -1     );
-  init_pair(CODE_PATH_PAIR,      COLOR_RED,         -1     );
-  init_pair(CODE_SPECIAL_PAIR,   COLOR_MAGENTA,     -1     );
-  init_pair(CODE_CURSOR_PAIR,    COLOR_WHITE,   COLOR_BLUE );
-  init_pair(CODE_CROSS_PAIR,     COLOR_BLACK,  COLOR_YELLOW);
-  init_pair(CODE_RUNNER_PAIR,    COLOR_WHITE,   COLOR_GREEN);
+  init_pair(LINE_COLOR_PAIR,     COLOR_BLACK,   COLOR_WHITE );
+  init_pair(STACK_COLOR_PAIR,    COLOR_WHITE,   COLOR_BLACK );
+  init_pair(TITLE_COLOR_PAIR,    COLOR_BLACK,   COLOR_WHITE );
+  init_pair(TERMINAL_COLOR_PAIR, COLOR_WHITE,        -1     );
+  init_pair(CODE_COLOR_PAIR,     COLOR_WHITE,        -1     );
+  init_pair(CODE_CHANGE_PAIR,    COLOR_CYAN,         -1     );
+  init_pair(CODE_CMD_PAIR,       COLOR_YELLOW,       -1     );
+  init_pair(CODE_PATH_PAIR,      COLOR_RED,          -1     );
+  init_pair(CODE_SPECIAL_PAIR,   COLOR_MAGENTA,      -1     );
+  init_pair(CODE_CURSOR_PAIR,    COLOR_WHITE,   COLOR_BLUE  );
+  init_pair(CODE_CROSS_PAIR,     COLOR_BLACK,   COLOR_YELLOW);
+  init_pair(CODE_RUNNER_PAIR,    COLOR_WHITE,   COLOR_GREEN );
 
   this->win = win;
 

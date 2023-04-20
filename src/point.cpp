@@ -73,12 +73,21 @@ bool Point::Is(int x, int y) {
   return ((this->_x == x) && (this->_y == y));
 }
 
-long Point::Value() const {
-  return (((unsigned long)this->_x) << 16) | ((unsigned long)this->_y);
+Vector Point::Value() const {
+  return {this->_x, this->_y};
 }
 
-bool PointCompare::operator()(const Point& a, const Point& b) const {
-  return a.Value() < b.Value();
+bool PointCompare::operator()(const Point& aP, const Point& bP) const {
+  Vector a = aP.Value();
+  Vector b = bP.Value();
+
+  if (a.x < b.x) return true;
+  if (a.x > b.x) return false;
+  // a.x == b.x
+  if (a.y < b.y) return true;
+  if (a.y > b.y) return false;
+  // a.y == b.y
+  return false;
 }
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "matrix.hpp"
 #include "point.hpp"
+#include "rect.hpp"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ class Editor {
   public:
     Point* position;
     Point* direction;
+    Rect* selection;
 
     Editor(Matrix*);
     ~Editor();

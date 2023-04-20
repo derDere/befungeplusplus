@@ -16,6 +16,7 @@ using namespace BefungePlusPlus;
 
 void quit();
 void printHelp();
+int getInput();
 
 /**
  * @brief  The main function
@@ -43,7 +44,7 @@ int main(int argc, const char *argv[])
 
   app->Init(win);
 
-  int input;
+  long input;
   while (app->run) {
     app->Draw();
     input = getch();
