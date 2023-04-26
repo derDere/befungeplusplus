@@ -74,8 +74,8 @@ void Matrix::Import(string data) {
 
 string Matrix::Export() {
   string data = "";
-  for (int y = 0; y < this->Height(); y++) {
-    for (int x = 0; x < this->Width(); x++) {
+  for (int y = this->StartY(); y < this->Height(); y++) {
+    for (int x = this->StartX(); x < this->Width(); x++) {
       data += this->Get({x,y});
     }
     data += "\n";
@@ -83,38 +83,86 @@ string Matrix::Export() {
   return data;
 }
 
-int Matrix::Width() {
-  int width = 0;
+int Matrix::StartX() {
+  int minX = 0;
   for (map<Point, char>::iterator i = this->original->begin(); i != this->original->end(); i++) {
     int x = i->first.X();
-    if (x > width) {
-      width = x;
+    if (x < minX) {
+      minX = x;
     }
   }
   for (map<Point, char>::iterator i = this->changes->begin(); i != this->changes->end(); i++) {
     int x = i->first.X();
-    if (x > width) {
-      width = x;
+    if (x < minX) {
+      minX = x;
     }
   }
-  return width;
+  return minX;
+}
+
+int Matrix::StartY() {
+  int minY = 0;
+  for (map<Point, char>::iterator i = this->original->begin(); i != this->original->end(); i++) {
+    int y = i->first.Y();
+    if (y < minY) {
+      minY = y;
+    }
+  }
+  for (map<Point, char>::iterator i = this->changes->begin(); i != this->changes->end(); i++) {
+    int y = i->first.Y();
+    if (y < minY) {
+      minY = y;
+    }
+  }
+  return minY;
+}
+
+int Matrix::Width() {
+  int minX = 0;
+  int maxX = 0;
+  for (map<Point, char>::iterator i = this->original->begin(); i != this->original->end(); i++) {
+    int x = i->first.X();
+    if (x < minX) {
+      minX = x;
+    }
+    if (x > maxX) {
+      maxX = x;
+    }
+  }
+  for (map<Point, char>::iterator i = this->changes->begin(); i != this->changes->end(); i++) {
+    int x = i->first.X();
+    if (x < minX) {
+      minX = x;
+    }
+    if (x > maxX) {
+      maxX = x;
+    }
+  }
+  return maxX - minX;
 }
 
 int Matrix::Height() {
-  int height = 0;
+  int minY = 0;
+  int maxY = 0;
   for (map<Point, char>::iterator i = this->original->begin(); i != this->original->end(); i++) {
     int y = i->first.Y();
-    if (y > height) {
-      height = y;
+    if (y < minY) {
+      minY = y;
+    }
+    if (y > maxY) {
+      maxY = y;
     }
   }
   for (map<Point, char>::iterator i = this->changes->begin(); i != this->changes->end(); i++) {
     int y = i->first.Y();
-    if (y > height) {
-      height = y;
+    if (y < minY) {
+      minY = y;
+    }
+    if (y > maxY) {
+      maxY = y;
     }
   }
-  return height;
+  return maxY - minY;
 }
 
 #endif

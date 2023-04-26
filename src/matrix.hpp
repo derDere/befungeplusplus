@@ -23,6 +23,8 @@ class Matrix {
     void Change(Point, char);
     bool Changed(Point);
 
+    int StartX();
+    int StartY();
     int Width();
     int Height();
 
