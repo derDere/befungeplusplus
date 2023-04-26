@@ -3,6 +3,8 @@
 
 #include <string>
 
+class CodeView;
+
 #include "colors.hpp"
 #include "view.hpp"
 #include "matrix.hpp"
@@ -25,6 +27,9 @@ class CodeView : public View {
 
     void Draw();
     void Update();
+
+    int viewX();
+    int viewY();
 };
 
 #endif

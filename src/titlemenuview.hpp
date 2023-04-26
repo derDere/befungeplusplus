@@ -11,7 +11,7 @@ using namespace std;
 class TitleMenuView : public View {
 
   private:
-    string code;
+    string title;
 
   public:
     TitleMenuView();

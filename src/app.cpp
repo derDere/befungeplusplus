@@ -3,6 +3,9 @@
 
 #include "app.hpp"
 
+#define KEY_CTRL_A 1
+#define KEY_ESC 27
+
 using namespace std;
 using namespace BefungePlusPlus;
 
@@ -84,18 +87,34 @@ void App::Init(WINDOW* win) {
   init_pair(CODE_CURSOR_PAIR,    COLOR_WHITE,   COLOR_BLUE  );
   init_pair(CODE_CROSS_PAIR,     COLOR_BLACK,   COLOR_YELLOW);
   init_pair(CODE_RUNNER_PAIR,    COLOR_WHITE,   COLOR_GREEN );
+  init_pair(MENU_COLOR_PAIR,     COLOR_WHITE,   COLOR_BLUE  );
+  init_pair(MENU_SELECTED_PAIR,  COLOR_BLUE,   COLOR_WHITE );
 
   this->win = win;
 
   this->titleMenuView = new TitleMenuView();
   this->codeView = new CodeView(this->matrix, this->editor, this->runner);
+  this->editor->SetCodeView(this->codeView);
   this->stackView = new StackView();
   this->lineView = new LineView();
   this->termView = new TerminalView();
+  this->menuView = new MenuView();
 }
 
 void App::Update(int input) {
-  if (this->editMode) {
+  if (input == KEY_CTRL_A && !this->menuView->IsOpen()) {
+    this->menuView->Open();
+
+  } else if (input == KEY_CTRL_A && this->menuView->IsOpen()) {
+    this->menuView->Close();
+
+  } else if (input == KEY_ESC && this->menuView->IsOpen()) {
+    this->menuView->Close();
+
+  } else if (this->menuView->IsOpen()) {
+    this->menuView->Inject(input);
+
+  } else if (this->editMode) {
     this->editor->Inject(input);
   }
 }
@@ -233,6 +252,7 @@ void App::Draw() {
     this->stackView->Hide();
   }
   this->termView->Update();
+  this->menuView->Update();
 
   // Draw Views
   if (this->showCode) this->codeView->Draw();
@@ -240,6 +260,7 @@ void App::Draw() {
   if (this->showTitle) this->titleMenuView->Draw();
   if (this->showStack) this->stackView->Draw();
   this->termView->Draw();
+  this->menuView->Draw();
 
   update_panels();
   doupdate();

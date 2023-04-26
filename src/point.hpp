@@ -17,9 +17,9 @@ class Point {
     int _y;
 
   public:
-    int X();
+    int X() const;
     void X(int);
-    int Y();
+    int Y() const;
     void Y(int);
 
     Point(int, int);

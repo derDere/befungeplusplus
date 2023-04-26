@@ -13,5 +13,7 @@
 #define CODE_CURSOR_PAIR 10
 #define CODE_CROSS_PAIR 11
 #define CODE_RUNNER_PAIR 12
+#define MENU_COLOR_PAIR 13
+#define MENU_SELECTED_PAIR 14
 
 #endif

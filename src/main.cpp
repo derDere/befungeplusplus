@@ -40,7 +40,7 @@ int main(int argc, const char *argv[])
   noecho();
   cbreak();
   keypad(stdscr, true);
-  // mousemask(BUTTON1_CLICKED, NULL); //ALL_MOUSE_EVENTS, NULL);
+  mousemask(BUTTON1_CLICKED, NULL); //ALL_MOUSE_EVENTS, NULL);
 
   app->Init(win);
 

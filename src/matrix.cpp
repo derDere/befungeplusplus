@@ -57,11 +57,64 @@ void Matrix::Reset() {
 }
 
 void Matrix::Import(string data) {
-
+  this->Reset();
+  int x = 0;
+  int y = 0;
+  for (int i = 0; i < data.length(); i++) {
+    char c = data[i];
+    if (c == '\n') {
+      y++;
+      x = 0;
+    } else {
+      this->Set({x,y}, c);
+      x++;
+    }
+  }
 }
 
 string Matrix::Export() {
+  string data = "";
+  for (int y = 0; y < this->Height(); y++) {
+    for (int x = 0; x < this->Width(); x++) {
+      data += this->Get({x,y});
+    }
+    data += "\n";
+  }
+  return data;
+}
 
+int Matrix::Width() {
+  int width = 0;
+  for (map<Point, char>::iterator i = this->original->begin(); i != this->original->end(); i++) {
+    int x = i->first.X();
+    if (x > width) {
+      width = x;
+    }
+  }
+  for (map<Point, char>::iterator i = this->changes->begin(); i != this->changes->end(); i++) {
+    int x = i->first.X();
+    if (x > width) {
+      width = x;
+    }
+  }
+  return width;
+}
+
+int Matrix::Height() {
+  int height = 0;
+  for (map<Point, char>::iterator i = this->original->begin(); i != this->original->end(); i++) {
+    int y = i->first.Y();
+    if (y > height) {
+      height = y;
+    }
+  }
+  for (map<Point, char>::iterator i = this->changes->begin(); i != this->changes->end(); i++) {
+    int y = i->first.Y();
+    if (y > height) {
+      height = y;
+    }
+  }
+  return height;
 }
 
 #endif

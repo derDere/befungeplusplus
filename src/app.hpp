@@ -13,6 +13,7 @@
 #include "matrix.hpp"
 #include "runner.hpp"
 #include "editor.hpp"
+#include "menuview.hpp"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ namespace BefungePlusPlus
       LineView* lineView;
       TerminalView* termView;
       CodeView* codeView;
+      MenuView* menuView;
 
       Matrix* matrix;
       Runner* runner;

@@ -23,6 +23,9 @@ class Matrix {
     void Change(Point, char);
     bool Changed(Point);
 
+    int Width();
+    int Height();
+
     void Reset();
     void Import(string);
     string Export();

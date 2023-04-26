@@ -17,7 +17,7 @@ Point::~Point() {
   this->_y = 0;
 }
 
-int Point::X() {
+int Point::X() const {
   return this->_x;
 }
 
@@ -25,7 +25,7 @@ void Point::X(int newX) {
   this->_x = newX;
 }
 
-int Point::Y() {
+int Point::Y() const {
   return this->_y;
 }
 

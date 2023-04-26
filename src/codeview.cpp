@@ -19,6 +19,14 @@ CodeView::~CodeView() {
   delete this->viewPoint;
 }
 
+int CodeView::viewX() {
+  return this->viewPoint->X();
+}
+
+int CodeView::viewY() {
+  return this->viewPoint->Y();
+}
+
 void CodeView::Update() {
   this->Reposition();
 
