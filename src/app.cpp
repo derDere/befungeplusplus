@@ -2,9 +2,7 @@
 #define APP_CPP
 
 #include "app.hpp"
-
-#define KEY_CTRL_A 1
-#define KEY_ESC 27
+#include "advkeys.hpp"
 
 using namespace std;
 using namespace BefungePlusPlus;
@@ -75,6 +73,7 @@ App::~App() {
 
 void App::Init(WINDOW* win) {
 
+  //        COLOR_ID,            FG_COLOR,      BG_COLOR
   init_pair(LINE_COLOR_PAIR,     COLOR_BLACK,   COLOR_WHITE );
   init_pair(STACK_COLOR_PAIR,    COLOR_WHITE,   COLOR_BLACK );
   init_pair(TITLE_COLOR_PAIR,    COLOR_BLACK,   COLOR_WHITE );
@@ -85,10 +84,11 @@ void App::Init(WINDOW* win) {
   init_pair(CODE_PATH_PAIR,      COLOR_RED,          -1     );
   init_pair(CODE_SPECIAL_PAIR,   COLOR_MAGENTA,      -1     );
   init_pair(CODE_CURSOR_PAIR,    COLOR_WHITE,   COLOR_BLUE  );
-  init_pair(CODE_CROSS_PAIR,     COLOR_BLACK,   COLOR_YELLOW);
+  init_pair(CODE_CROSS_PAIR,     COLOR_YELLOW,       -1     );
   init_pair(CODE_RUNNER_PAIR,    COLOR_WHITE,   COLOR_GREEN );
   init_pair(MENU_COLOR_PAIR,     COLOR_WHITE,   COLOR_BLUE  );
-  init_pair(MENU_SELECTED_PAIR,  COLOR_BLUE,   COLOR_WHITE );
+  init_pair(MENU_SELECTED_PAIR,  COLOR_BLUE,    COLOR_WHITE );
+  init_pair(CODE_NEGATIVE_PAIR,  COLOR_BLACK,        -1     );
 
   this->win = win;
 
@@ -102,14 +102,33 @@ void App::Init(WINDOW* win) {
 }
 
 void App::Update(int input) {
-  if (input == KEY_CTRL_A && !this->menuView->IsOpen()) {
+  if (input == KEY_CTRL_SPACE && !this->menuView->IsOpen()) {
     this->menuView->Open();
 
-  } else if (input == KEY_CTRL_A && this->menuView->IsOpen()) {
+  } else if (input == KEY_CTRL_SPACE && this->menuView->IsOpen()) {
     this->menuView->Close();
 
   } else if (input == KEY_ESC && this->menuView->IsOpen()) {
     this->menuView->Close();
+
+  } else if (input == KEY_CTRL_Q) {
+    // TODO Save prompt
+    this->run = false;
+
+  } else if (input == KEY_CTRL_R) {
+    this->horizontal = !this->horizontal;
+
+  } else if (input == KEY_CTRL_4) {
+    this->showTitle = !this->showTitle;
+
+  } else if (input == KEY_CTRL_5) {
+    this->showCode = !this->showCode;
+
+  } else if (input == KEY_CTRL_6) {
+    this->showLine = !this->showLine;
+
+  } else if (input == KEY_CTRL_7) {
+    this->showStack = !this->showStack;
 
   } else if (this->menuView->IsOpen()) {
     this->menuView->Inject(input);

@@ -20,7 +20,7 @@ void TitleMenuView::Draw() {
 
   int x = 0;
   vector<string> info = {
-    "^a", "Menu",
+    "^spc", "Menu",
   //  "^s", "Save",
   //  "^o", "Open",
   //  "^q", "Quit",

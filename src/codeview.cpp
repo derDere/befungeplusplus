@@ -11,7 +11,7 @@ CodeView::CodeView(Matrix* matrix, Editor* editor, Runner* runner) {
   this->editor = editor;
   this->runner = runner;
   this->viewPoint = new Point(-4, -2);
-  this->showCross = false;
+  this->showCross = !false;
 }
 
 CodeView::~CodeView() {
@@ -27,14 +27,33 @@ int CodeView::viewY() {
   return this->viewPoint->Y();
 }
 
+int CodeView::viewMarginX() {
+  // Calculate margins X
+  int xm = (this->bounds->Width() - 1) / 2;
+  if (xm > 4) xm = 4;
+  return xm;
+}
+
+int CodeView::viewMarginY() {
+  // Calculate margins Y
+  int ym = (this->bounds->Height() - 1) / 2;
+  if (ym > 2) ym = 2;
+  return ym;
+}
+
+int CodeView::viewWidth() {
+  return this->bounds->Width() - (this->viewMarginX() * 2);
+}
+
+int CodeView::viewHeight() {
+  return this->bounds->Height() - (this->viewMarginY() * 2);
+}
+
 void CodeView::Update() {
   this->Reposition();
 
-  // Calculate margins
-  int xm = (this->bounds->Width() - 1) / 2;
-  int ym = (this->bounds->Height() - 1) / 2;
-  if (xm > 4) xm = 4;
-  if (ym > 2) ym = 2;
+  int xm = this->viewMarginX();
+  int ym = this->viewMarginY();
 
   // Move ViewPoint
   if (this->viewPoint->X() < (this->editor->position->X() - this->bounds->Width() + xm + 1)) this->viewPoint->X(this->editor->position->X() - this->bounds->Width() + xm + 1);
@@ -82,7 +101,17 @@ void CodeView::Draw() {
           this->showCross
         ) {
           wattron(this->win, COLOR_PAIR(CODE_CROSS_PAIR));
-          waddch(this->win, c);
+          if (c == ' ') {
+            if (this->editor->position->X() == x && this->editor->position->Y() == y) {
+              waddstr(this->win, "┼");
+            } else if (this->editor->position->X() == x) {
+              waddstr(this->win, "│");
+            } else if (this->editor->position->Y() == y) {
+              waddstr(this->win, "─");
+            }
+          } else {
+            waddch(this->win, c);
+          }
           wattroff(this->win, COLOR_PAIR(CODE_CROSS_PAIR));
 
         } else {
@@ -150,7 +179,28 @@ void CodeView::Draw() {
               break;
 
             default:
-                waddch(this->win, c);
+                if (
+                  (c == ' ') &&
+                  (
+                    (x == -1 && y == -1) ||
+                    (x == -1 && y >= -1) ||
+                    (x >= -1 && y == -1)
+                  )
+                ) {
+                  wattron(this->win, COLOR_PAIR(CODE_NEGATIVE_PAIR));
+                  wattron(this->win, A_BOLD);
+                  if (x == -1 && y == -1) {
+                    waddstr(this->win, "┌");
+                  } else if (x == -1 && y >= -1) {
+                    waddstr(this->win, "│");
+                  } else if (x >= -1 && y == -1) {
+                    waddstr(this->win, "─");
+                  }
+                  wattroff(this->win, A_BOLD);
+                  wattroff(this->win, COLOR_PAIR(CODE_NEGATIVE_PAIR));
+                } else {
+                  waddch(this->win, c);
+                }
               break;
           }
         }

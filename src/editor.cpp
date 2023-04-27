@@ -5,22 +5,7 @@
 #include <ncursesw/ncurses.h>
 
 #include "editor.hpp"
-
-#define KEY_SUP 337
-#define KEY_SDOWN 336
-
-#define KEY_CLEFT 546
-#define KEY_CRIGHT 561
-#define KEY_CUP 547
-#define KEY_CDOWN 526
-
-#define KEY_ALEFT 544
-#define KEY_ARIGHT 559
-#define KEY_AUP 565
-#define KEY_ADOWN 524
-
-#define KEY_POS1 262
-#define KEY_END_DE 360
+#include "advkeys.hpp"
 
 using namespace std;
 
@@ -50,6 +35,24 @@ void Editor::Inject(int input) {
       this->position->X(event.x - this->codeView->bounds->X() + this->codeView->viewX());
       this->position->Y(event.y - this->codeView->bounds->Y() + this->codeView->viewY());
     }
+
+  } else if (input == KEY_CHOME) {
+    this->position->X(this->matrix->StartX());
+  } else if (input == KEY_CEND) {
+    this->position->X(this->matrix->StartX() + this->matrix->Width());
+  } else if (input == KEY_CPPAGE) {
+    this->position->Y(this->matrix->StartY());
+  } else if (input == KEY_CNPAGE) {
+    this->position->Y(this->matrix->StartY() + this->matrix->Height());
+
+  } else if (input == KEY_HOME) {
+    this->position->X(this->codeView->viewX() + this->codeView->viewMarginX());
+  } else if (input == KEY_END) {
+    this->position->X(this->codeView->viewX() + this->codeView->viewMarginX() + this->codeView->viewWidth() - 1);
+  } else if (input == KEY_PPAGE) {
+    this->position->Y(this->codeView->viewY() + this->codeView->viewMarginY());
+  } else if (input == KEY_NPAGE) {
+    this->position->Y(this->codeView->viewY() + this->codeView->viewMarginY() + this->codeView->viewHeight() - 1);
 
   } else if (input == KEY_BACKSPACE) {
     this->position->Sub(this->direction);
@@ -98,18 +101,12 @@ void Editor::Inject(int input) {
   } else if (input == KEY_SLEFT) {
   } else if (input == KEY_SRIGHT) {
 
-  } else if (input == KEY_POS1 || input == KEY_HOME) { // TODO: KEY_HOME is not working
-    this->position->X(0);
-  } else if (input == KEY_END_DE || input == KEY_END) { // TODO: KEY_END is not working
-    this->position->X(this->matrix->Width());
-  } else if (input == KEY_PPAGE) {
-    this->position->Y(0);
-  } else if (input == KEY_NPAGE) {
-    this->position->Y(this->matrix->Height());
-
   } else if (input == KEY_ENTER) {
     this->position->MvDown();
     this->position->X(0);
+
+  } else if (input == KEY_CTRL_T) {
+    this->codeView->showCross = !this->codeView->showCross;
 
   } else if (input == KEY_F(1)) {
   } else if (input == KEY_F(2)) {
@@ -126,6 +123,12 @@ void Editor::Inject(int input) {
   } else if (input == KEY_F(11)) {
     // TODO: Step
   } else if (input == KEY_F(12)) {
+
+  } else if (input == '\t') {
+    for (int i = 0; i < 4; i++) {
+      this->matrix->Set(*(this->position), ' ');
+      this->position->Add(this->direction);
+    }
 
   } else if ((input >= 32) && (input <= 126)) { // between space and ~
     this->matrix->Set(*(this->position), input);
@@ -153,6 +156,12 @@ void Editor::Inject(int input) {
   }
   else {
     cout << "input: " << input << endl;
+  }
+  if (this->position->X() < 0) {
+    this->position->X(0);
+  }
+  if (this->position->Y() < 0) {
+    this->position->Y(0);
   }
 }
 

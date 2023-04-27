@@ -30,6 +30,10 @@ class CodeView : public View {
 
     int viewX();
     int viewY();
+    int viewMarginX();
+    int viewMarginY();
+    int viewWidth();
+    int viewHeight();
 };
 
 #endif

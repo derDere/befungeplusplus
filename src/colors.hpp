@@ -15,5 +15,6 @@
 #define CODE_RUNNER_PAIR 12
 #define MENU_COLOR_PAIR 13
 #define MENU_SELECTED_PAIR 14
+#define CODE_NEGATIVE_PAIR 15
 
 #endif

@@ -33,21 +33,22 @@ int main(int argc, const char *argv[])
   setlocale(LC_ALL, "");
   WINDOW* win = initscr();
   atexit(quit);
-  curs_set(0);
-  use_default_colors();
-  start_color();
-  clear();
-  noecho();
-  cbreak();
-  keypad(stdscr, true);
-  mousemask(BUTTON1_CLICKED, NULL); //ALL_MOUSE_EVENTS, NULL);
+  raw(); // disable line buffering
+  curs_set(0); // hide cursor
+  use_default_colors(); // enable transparent black
+  start_color(); // enable color
+  clear(); // clear screen
+  noecho(); // disable echo
+  cbreak(); // disable line buffering
+  keypad(stdscr, true); // enable function keys
+  mousemask(ALL_MOUSE_EVENTS, NULL); // enable mouse events
 
   app->Init(win);
 
   long input;
   while (app->run) {
     app->Draw();
-    input = getch();
+    input = wgetch(win);
     app->Update(input);
   }
 
