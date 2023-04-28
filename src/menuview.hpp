@@ -26,6 +26,7 @@ class MenuView : public View {
     void Open();
     void Close();
 
+    void MouseInject(MEVENT);
     void Inject(int);
     void Draw();
     void Update();

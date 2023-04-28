@@ -11,7 +11,7 @@ CodeView::CodeView(Matrix* matrix, Editor* editor, Runner* runner) {
   this->editor = editor;
   this->runner = runner;
   this->viewPoint = new Point(-4, -2);
-  this->showCross = !false;
+  this->showCross = false;
 }
 
 CodeView::~CodeView() {
@@ -70,6 +70,12 @@ void CodeView::Draw() {
   bool changed;
   int xo = this->viewPoint->X();
   int yo = this->viewPoint->Y();
+  Rect selection(
+    this->editor->position->X(),
+    this->editor->position->Y(),
+    this->editor->selection->Width(),
+    this->editor->selection->Height()
+  );
   for (int yi = 0; yi < this->bounds->Height(); yi++) {
     for (int xi = 0; xi < this->bounds->Width(); xi++) {
       int x = xi + xo;
@@ -81,7 +87,7 @@ void CodeView::Draw() {
         wattroff(this->win, COLOR_PAIR(CODE_CHANGE_PAIR));
 
       } else {
-        if (this->editor->position->Is(x, y)) {
+        if (selection.Contains({x, y})) {
           wattron(this->win, A_BLINK);
           wattron(this->win, COLOR_PAIR(CODE_CURSOR_PAIR));
           waddch(this->win, c);

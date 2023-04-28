@@ -102,7 +102,27 @@ void App::Init(WINDOW* win) {
 }
 
 void App::Update(int input) {
-  if (input == KEY_CTRL_SPACE && !this->menuView->IsOpen()) {
+  if (input == KEY_MOUSE) {
+    MEVENT event;
+    if (getmouse(&event) == OK) {
+      bool forwardedToMenu = false;
+      if (this->menuView->IsOpen())
+       if (this->menuView->bounds->Contains({event.x, event.y})) {
+        this->menuView->MouseInject(event);
+        forwardedToMenu = true;
+       } else {
+        this->menuView->Close();
+      }
+      if (!forwardedToMenu) {
+        if (this->titleMenuView->bounds->Contains({event.x, event.y})) {
+          this->titleMenuView->MouseInject(event);
+
+        } else if (this->codeView->bounds->Contains({event.x, event.y})) {
+          this->editor->MouseInject(event);
+        }
+      }
+    }
+  } else if (input == KEY_CTRL_SPACE && !this->menuView->IsOpen()) {
     this->menuView->Open();
 
   } else if (input == KEY_CTRL_SPACE && this->menuView->IsOpen()) {

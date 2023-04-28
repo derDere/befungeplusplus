@@ -5,6 +5,9 @@
 #include <iostream>
 #include <ncursesw/ncurses.h>
 #include <unistd.h>
+#include <termios.h>
+#include <signal.h>
+#include "advkeys.hpp"
 #include "app.hpp"
 
 #define SLEEP(ms) usleep(ms)
@@ -14,9 +17,12 @@
 using namespace std;
 using namespace BefungePlusPlus;
 
+void onSignal(int signal);
 void quit();
+void onSignal(int signal);
 void printHelp();
-int getInput();
+
+App* app = nullptr;
 
 /**
  * @brief  The main function
@@ -27,7 +33,7 @@ int getInput();
  */
 int main(int argc, const char *argv[])
 {
-  App* app = new App();
+  app = new App();
 
   // Init Curses ----------
   setlocale(LC_ALL, "");
@@ -43,6 +49,19 @@ int main(int argc, const char *argv[])
   keypad(stdscr, true); // enable function keys
   mousemask(ALL_MOUSE_EVENTS, NULL); // enable mouse events
 
+  // Disable Ctrl-C signal
+  signal(SIGINT, onSignal);
+
+  // Enable Ctrl-Z and Ctrl-S keys
+  struct termios term;
+  tcgetattr(STDIN_FILENO, &term); // get terminal attributes
+  term.c_lflag &= ~(ICANON | ECHO); // disable canonical mode and echo
+  term.c_cc[VMIN] = 1; // read at least 1 byte
+  term.c_cc[VTIME] = 0; // no timeout
+  term.c_cc[VSTOP] = _POSIX_VDISABLE; // disable Ctrl-S
+  term.c_cc[VSUSP] = _POSIX_VDISABLE; // disable Ctrl-Z
+  tcsetattr(STDIN_FILENO, TCSANOW, &term); // set terminal attributes
+
   app->Init(win);
 
   long input;
@@ -56,6 +75,14 @@ int main(int argc, const char *argv[])
 }
 
 void printHelp() {}
+
+void onSignal(int signal) {
+  if (app != nullptr) {
+    if (signal == SIGINT) {
+      app->Update(KEY_CTRL_C);
+    }
+  }
+}
 
 void quit() {
   endwin();

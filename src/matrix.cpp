@@ -8,13 +8,19 @@ using namespace std;
 Matrix::Matrix() {
   this->original = new map<Point, char, PointCompare>();
   this->changes = new map<Point, char, PointCompare>();
+  this->history = new vector<ChangeStep>();
+  this->future = new vector<ChangeStep>();
 }
 
 Matrix::~Matrix() {
   this->changes->clear();
   this->original->clear();
+  this->history->clear();
+  this->future->clear();
   delete this->original;
   delete this->changes;
+  delete this->history;
+  delete this->future;
 }
 
 char Matrix::Get(Point key) {
@@ -31,12 +37,46 @@ char Matrix::Get(Point key) {
   }
 }
 
-void Matrix::Set(Point key, char value) {
-  if (value == ' ') {
-    this->original->erase(key);
-  } else {
-    (*(this->original))[key] = value;
+void Matrix::Set(Point key, char value, bool changeHistory) {
+  char old_value = this->Get(key);
+  if (old_value != value) {
+    if (value == ' ') {
+      this->original->erase(key);
+    } else {
+      (*(this->original))[key] = value;
+    }
+    if (changeHistory) {
+      this->history->push_back({key, old_value, value});
+      this->future->clear();
+      while (this->history->size() > MATRIX_HISTORY_SIZE) {
+        this->history->erase(this->history->begin());
+      }
+    }
   }
+}
+
+bool Matrix::Undo(Point& key) {
+  if (this->history->size() > 0) {
+    ChangeStep change = this->history->back();
+    this->history->pop_back();
+    this->future->push_back(change);
+    this->Set(change.key, change.old_value, false);
+    key = change.key;
+    return true;
+  }
+  return false;
+}
+
+bool Matrix::Redo(Point& key) {
+  if (this->future->size() > 0) {
+    ChangeStep change = this->future->back();
+    this->future->pop_back();
+    this->history->push_back(change);
+    this->Set(change.key, change.new_value, false);
+    key = change.key;
+    return true;
+  }
+  return false;
 }
 
 void Matrix::Change(Point key, char value) {

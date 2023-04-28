@@ -9,6 +9,8 @@ class Rect : public Point, public Size {
     Rect(int, int, int, int);
     Rect();
     ~Rect();
+
+    bool Contains(Point);
 };
 
 #endif

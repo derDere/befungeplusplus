@@ -15,10 +15,20 @@ TitleMenuView::~TitleMenuView() {
   this->title = "";
 }
 
+void TitleMenuView::SetTitle(string title) {
+  this->title = title;
+}
+
+void TitleMenuView::MouseInject(MEVENT event) {
+  if(event.bstate & BUTTON1_CLICKED) {
+    // TODO Handle mouse clicks
+  }
+}
+
 void TitleMenuView::Draw() {
   wbkgd(this->win, COLOR_PAIR(TITLE_COLOR_PAIR));
 
-  int x = 0;
+  int x = 6;
   vector<string> info = {
     "^spc", "Menu",
   //  "^s", "Save",
@@ -51,13 +61,20 @@ void TitleMenuView::Draw() {
   wattroff(this->win, A_REVERSE);
 
   int half = (this->bounds->Width() - this->title.length() - x) / 2;
+  int half2 = (this->bounds->Width() - this->title.length() - x) - half;
   for(int i = 0; i < half; i++) {
     waddstr(this->win, " ");
   }
   waddstr(this->win, this->title.c_str());
-  for(int i = 0; i < half; i++) {
+  for(int i = 0; i < half2; i++) {
     waddstr(this->win, " ");
   }
+
+  wattron(this->win, A_REVERSE);
+  waddstr(this->win, "^q");
+  wattroff(this->win, A_REVERSE);
+
+  waddstr(this->win, "Quit");
 }
 
 void TitleMenuView::Update() {

@@ -13,6 +13,7 @@ Editor::Editor(Matrix* matrix) {
   this->matrix = matrix;
   this->position = new Point(0, 0);
   this->direction = new Point(1, 0);
+  this->selection = new Size(1, 1);
   this->strMode = false;
   this->codeView = nullptr;
 }
@@ -22,21 +23,38 @@ Editor::~Editor() {
   delete this->matrix;
   delete this->position;
   delete this->direction;
+  delete this->selection;
 }
 
 void Editor::SetCodeView(CodeView* codeView) {
   this->codeView = codeView;
 }
 
-void Editor::Inject(int input) {
-  if (input == KEY_MOUSE) {
-    MEVENT event;
-    if (getmouse(&event) == OK) {
+void Editor::MouseInject(MEVENT event) {
+  if (event.bstate & BUTTON1_CLICKED) { // Left click
+      // Set the position to the mouse position
       this->position->X(event.x - this->codeView->bounds->X() + this->codeView->viewX());
       this->position->Y(event.y - this->codeView->bounds->Y() + this->codeView->viewY());
-    }
+      this->selection->Width(1);
+      this->selection->Height(1);
 
-  } else if (input == KEY_CHOME) {
+  } else if (event.bstate & BUTTON3_CLICKED) { // Right click
+      cout << "Right click" << endl;
+
+  } else if (event.bstate & BUTTON2_CLICKED) { // Middle click
+      cout << "Middle click" << endl;
+
+  } else if (event.bstate & BUTTON4_PRESSED) { // Mouse wheel up
+      this->position->MvUp();
+
+  } else if (event.bstate & BUTTON5_PRESSED) { // Mouse wheel down
+      this->position->MvDown();
+  }
+}
+
+void Editor::Inject(int input) {
+  bool changedSelection = false;
+  if (input == KEY_CHOME) {
     this->position->X(this->matrix->StartX());
   } else if (input == KEY_CEND) {
     this->position->X(this->matrix->StartX() + this->matrix->Width());
@@ -70,6 +88,31 @@ void Editor::Inject(int input) {
   } else if (input == KEY_DOWN) {
     this->position->MvDown();
 
+  } else if (input == KEY_CTRL_Z) {
+    Point newPos;
+    if (this->matrix->Undo(newPos)) {
+      this->position->X(newPos.X());
+      this->position->Y(newPos.Y());
+    }
+
+  } else if (input == KEY_CTRL_Y) {
+    Point newPos;
+    if (this->matrix->Redo(newPos)) {
+      this->position->X(newPos.X());
+      this->position->Y(newPos.Y());
+    }
+
+  } else if (input == KEY_CTRL_C) {
+    cout << "Copy" << endl;
+    changedSelection = true;
+
+  } else if (input == KEY_CTRL_X) {
+    cout << "Cut" << endl;
+
+  } else if (input == KEY_CTRL_V) {
+    cout << "Paste" << endl;
+    changedSelection = true;
+
   } else if (input == KEY_ALEFT) {
     this->matrix->Set(*(this->position), '<');
     this->direction->Set(LEFT);
@@ -97,9 +140,19 @@ void Editor::Inject(int input) {
     this->direction->Set(DOWN);
 
   } else if (input == KEY_SUP) {
+    this->position->MvUp();
+    this->selection->Height(this->selection->Height() + 1);
+    changedSelection = true;
   } else if (input == KEY_SDOWN) {
+    this->selection->Height(this->selection->Height() + 1);
+    changedSelection = true;
   } else if (input == KEY_SLEFT) {
+    this->position->MvLeft();
+    this->selection->Width(this->selection->Width() + 1);
+    changedSelection = true;
   } else if (input == KEY_SRIGHT) {
+    this->selection->Width(this->selection->Width() + 1);
+    changedSelection = true;
 
   } else if (input == KEY_ENTER) {
     this->position->MvDown();
@@ -162,6 +215,10 @@ void Editor::Inject(int input) {
   }
   if (this->position->Y() < 0) {
     this->position->Y(0);
+  }
+  if (!changedSelection) {
+    this->selection->Width(1);
+    this->selection->Height(1);
   }
 }
 

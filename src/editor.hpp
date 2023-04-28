@@ -19,12 +19,13 @@ class Editor {
   public:
     Point* position;
     Point* direction;
-    Rect* selection;
+    Size* selection;
 
     Editor(Matrix*);
     ~Editor();
 
     void Inject(int);
+    void MouseInject(MEVENT);
     void SetCodeView(CodeView*);
 };
 

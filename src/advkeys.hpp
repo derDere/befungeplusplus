@@ -15,6 +15,7 @@
 #define KEY_CTRL_Q 17 // Ctrl + Q                  TODO: quit
 #define KEY_CTRL_T 20 // Ctrl + T                  TODO: make it toggle target mode
 #define KEY_CTRL_R 18 // Ctrl + R                  TODO: make it switch to horizontal mode
+#define KEY_CTRL_G 7 // Ctrl + G                   TODO: go to coords
 
 #define KEY_CTRL_4 28 // Ctrl + 4                  TODO: toggle title view
 #define KEY_CTRL_5 29 // Ctrl + 5                  TODO: toggle code view

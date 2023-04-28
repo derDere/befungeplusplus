@@ -17,6 +17,9 @@ class TitleMenuView : public View {
     TitleMenuView();
     ~TitleMenuView();
 
+    void SetTitle(string title);
+
+    void MouseInject(MEVENT);
     void Draw();
     void Update();
 };
