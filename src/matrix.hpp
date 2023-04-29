@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "point.hpp"
+#include "rect.hpp"
 
 #define MATRIX_HISTORY_SIZE 1000
 

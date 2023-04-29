@@ -112,7 +112,7 @@ void Matrix::Import(string data) {
   }
 }
 
-string Matrix::Export() {
+string Matrix::Export(Rect* rect) {
   string data = "";
   for (int y = this->StartY(); y < this->Height(); y++) {
     for (int x = this->StartX(); x < this->Width(); x++) {
