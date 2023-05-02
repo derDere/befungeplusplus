@@ -6,6 +6,7 @@
 
 #include "editor.hpp"
 #include "advkeys.hpp"
+#include "clipboard.hpp"
 
 using namespace std;
 
@@ -77,7 +78,12 @@ void Editor::Inject(int input) {
     this->matrix->Set(*(this->position), ' ');
 
   } else if (input == KEY_DC) {
-    this->matrix->Set(*(this->position), ' ');
+    for (int y = 0; y < this->selection->Height(); y++) {
+      for (int x = 0; x < this->selection->Width(); x++) {
+        Point pos(this->position->X() + x, this->position->Y() + y);
+        this->matrix->Set(pos, ' ');
+      }
+    }
 
   } else if (input == KEY_UP) {
     this->position->MvUp();
@@ -103,14 +109,41 @@ void Editor::Inject(int input) {
     }
 
   } else if (input == KEY_CTRL_C) {
-    cout << "Copy" << endl;
+    Rect* rect = new Rect(this->position->X(), this->position->Y(), this->selection->Width(), this->selection->Height());
+    string data = this->matrix->Export(rect);
+    Clipboard::SetText(data);
+    delete rect;
     changedSelection = true;
 
   } else if (input == KEY_CTRL_X) {
-    cout << "Cut" << endl;
+    Rect* rect = new Rect(this->position->X(), this->position->Y(), this->selection->Width(), this->selection->Height());
+    string data = this->matrix->Export(rect);
+    Clipboard::SetText(data);
+    for (int y = 0; y < rect->Height(); y++) {
+      for (int x = 0; x < rect->Width(); x++) {
+        this->matrix->Set({rect->X() + x, rect->Y() + y}, ' ');
+      }
+    }
+    delete rect;
 
   } else if (input == KEY_CTRL_V) {
-    cout << "Paste" << endl;
+    string data = Clipboard::GetText();
+    this->matrix->Import(data, this->position);
+    // sets the with to the length of the longest line
+    int width = 0;
+    int i = 0;
+    while (i < data.length()) {
+      int j = 0;
+      while (data[i + j] != '\n' && i + j < data.length()) {
+        j++;
+      }
+      if (j > width) {
+        width = j;
+      }
+      i += j + 1;
+    }
+    this->selection->Width(width);
+    this->selection->Height(count(data.begin(), data.end(), '\n') + 1);
     changedSelection = true;
 
   } else if (input == KEY_ALEFT) {

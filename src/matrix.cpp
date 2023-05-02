@@ -96,26 +96,39 @@ void Matrix::Reset() {
   this->changes->clear();
 }
 
-void Matrix::Import(string data) {
-  this->Reset();
+void Matrix::Import(string data, Point* offset) {
   int x = 0;
   int y = 0;
   for (int i = 0; i < data.length(); i++) {
     char c = data[i];
     if (c == '\n') {
-      y++;
       x = 0;
+      y++;
     } else {
-      this->Set({x,y}, c);
+      Point key = Point(x, y);
+      if (offset != nullptr) {
+        key.Add(offset);
+      }
+      this->Set(key, c);
       x++;
     }
   }
 }
 
 string Matrix::Export(Rect* rect) {
+  int startX = this->StartX();
+  int startY = this->StartY();
+  int width = this->Width();
+  int height = this->Height();
+  if (rect != nullptr) {
+    startX = rect->X();
+    startY = rect->Y();
+    width = rect->Width();
+    height = rect->Height();
+  }
   string data = "";
-  for (int y = this->StartY(); y < this->Height(); y++) {
-    for (int x = this->StartX(); x < this->Width(); x++) {
+  for (int y = startY; y < startY + height; y++) {
+    for (int x = startX; x < startX + width; x++) {
       data += this->Get({x,y});
     }
     data += "\n";

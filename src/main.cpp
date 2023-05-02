@@ -9,6 +9,7 @@
 //#include <signal.h>
 #include "advkeys.hpp"
 #include "app.hpp"
+#include "config.hpp"
 
 #define SLEEP(ms) usleep(ms)
 
@@ -32,6 +33,7 @@ App* app = nullptr;
  */
 int main(int argc, const char *argv[])
 {
+  Config::Reload();
   app = new App();
 
   // Init Curses ----------

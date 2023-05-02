@@ -42,7 +42,7 @@ class Matrix {
     int Height();
 
     void Reset();
-    void Import(string);
+    void Import(string, Point* = nullptr);
     string Export(Rect* = nullptr);
 
     bool Undo(Point&);
