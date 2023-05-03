@@ -47,9 +47,11 @@ void MenuView::ClearOptions() {
 void MenuView::MouseInject(MEVENT event) {
   if (event.bstate & BUTTON1_CLICKED) {
     int index = event.y - this->bounds->Y() - 1;
-    MenuOption* opt = this->options->at(index);
-    if (opt->Shortcut() != '\0') {
-      this->selected = index;
+    if (index >= 0 && index < this->options->size()) {
+      MenuOption* opt = this->options->at(index);
+      if (opt->Shortcut() != '\0') {
+        this->selected = index;
+      }
     }
   }
 }

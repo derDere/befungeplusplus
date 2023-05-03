@@ -12,24 +12,6 @@ App::App() {
   this->runner = new Runner();
   this->editor = new Editor(this->matrix);
 
-  //for(int x = 0; x < 160; x++) {
-  //  for(int y = 0; y < 80; y++) {
-  //    this->matrix->Set({x,y}, '.');
-  //  }
-  //}
-  //
-  //this->matrix->Set({0,0}, '@');
-  //this->matrix->Set({1,1}, '^');
-  //this->matrix->Set({2,2}, '>');
-  //this->matrix->Set({3,3}, 'v');
-  //this->matrix->Set({4,4}, '<');
-  //this->matrix->Set({5,5}, '+');
-  //this->matrix->Set({6,6}, '-');
-  //this->matrix->Set({7,7}, '*');
-  //this->matrix->Set({8,8}, '/');
-  //
-  //this->matrix->Change({5,5}, '#');
-
   this->run = true;
 
   this->asciiMode = false;
@@ -92,13 +74,13 @@ void App::Init(WINDOW* win) {
 
   this->win = win;
 
-  this->titleMenuView = new TitleMenuView();
+  this->menuView = new MenuView();
+  this->titleMenuView = new TitleMenuView(this->menuView);
   this->codeView = new CodeView(this->matrix, this->editor, this->runner);
   this->editor->SetCodeView(this->codeView);
   this->stackView = new StackView();
   this->lineView = new LineView();
   this->termView = new TerminalView();
-  this->menuView = new MenuView();
 }
 
 void App::Update(int input) {
@@ -106,16 +88,20 @@ void App::Update(int input) {
     MEVENT event;
     if (getmouse(&event) == OK) {
       bool forwardedToMenu = false;
-      if (this->menuView->IsOpen())
+      if (this->menuView->IsOpen()) {
        if (this->menuView->bounds->Contains({event.x, event.y})) {
         this->menuView->MouseInject(event);
         forwardedToMenu = true;
        } else {
         this->menuView->Close();
+       }
       }
       if (!forwardedToMenu) {
         if (this->titleMenuView->bounds->Contains({event.x, event.y})) {
           this->titleMenuView->MouseInject(event);
+          if (this->titleMenuView->IsQuitRequested()) {
+            this->Quit();
+          }
 
         } else if (this->codeView->bounds->Contains({event.x, event.y})) {
           this->editor->MouseInject(event);
@@ -132,8 +118,8 @@ void App::Update(int input) {
     this->menuView->Close();
 
   } else if (input == KEY_CTRL_Q) {
-    // TODO Save prompt
-    this->run = false;
+    // TODO: Save prompt
+    this->Quit();
 
   } else if (input == KEY_CTRL_R) {
     this->horizontal = !this->horizontal;
@@ -156,6 +142,14 @@ void App::Update(int input) {
   } else if (this->editMode) {
     this->editor->Inject(input);
   }
+}
+
+bool App::IsRunning() {
+  return this->run;
+}
+
+void App::Quit() {
+  this->run = false;
 }
 
 void App::Draw() {

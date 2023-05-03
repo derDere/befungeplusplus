@@ -12,7 +12,7 @@ debug:
 	gdb -ex run $(APP)
 
 test: $(APP)
-	./$(APP)
+	./$(APP) ; stty sane
 
 install: $(APP)
 	cp $(APP) /usr/local/bin/$(APP)

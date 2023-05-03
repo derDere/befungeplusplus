@@ -24,6 +24,7 @@ namespace BefungePlusPlus
     private:
       WINDOW* win;
       int cols, rows;
+      bool run;
 
       TitleMenuView* titleMenuView;
       StackView* stackView;
@@ -37,7 +38,6 @@ namespace BefungePlusPlus
       Editor* editor;
 
     public:
-      bool run;
 
       bool asciiMode;
       float borderPos;
@@ -57,6 +57,9 @@ namespace BefungePlusPlus
       void Init(WINDOW*);
       void Update(int);
       void Draw();
+
+      bool IsRunning();
+      void Quit();
   };
 }
 

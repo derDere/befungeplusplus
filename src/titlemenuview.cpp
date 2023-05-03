@@ -3,25 +3,55 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 #include "titlemenuview.hpp"
 
 using namespace std;
 
-TitleMenuView::TitleMenuView() {
+TitleMenuView::TitleMenuView(MenuView* menuView) {
+  this->menuView = menuView;
   this->title = "Title";
+  this->quitRequested = false;
 }
 
 TitleMenuView::~TitleMenuView() {
+  this->menuView = NULL;
   this->title = "";
+  this->quitRequested = false;
 }
 
 void TitleMenuView::SetTitle(string title) {
   this->title = title;
 }
 
+bool TitleMenuView::IsQuitRequested() {
+  bool q = this->quitRequested;
+  this->quitRequested = false;
+  return q;
+}
+
 void TitleMenuView::MouseInject(MEVENT event) {
   if(event.bstate & BUTTON1_CLICKED) {
-    // TODO Handle mouse clicks
+    if (event.y == 0) {
+      if (event.x <= 8 && !this->menuView->IsOpen()) {
+        this->menuView->Open();
+
+      } else if (event.x <= 15) {
+        // TODO: Toggle Help
+
+      } else if (event.x <= 21) {
+        // TODO: Start Run
+
+      } else if (event.x <= 29) {
+        // TODO: Do Step
+
+      } else if (event.x <= 36) {
+        // TODO: Stop Run
+
+      } else if (event.x >= (this->bounds->Width() - 6)) {
+        this->quitRequested = true;
+      }
+    }
   }
 }
 
