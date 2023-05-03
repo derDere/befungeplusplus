@@ -47,6 +47,8 @@ App::~App() {
   delete this->stackView;
   delete this->lineView;
   delete this->termView;
+  delete this->menuView;
+  delete this->helpView;
 
   delete this->editor;
   delete this->runner;
@@ -71,9 +73,11 @@ void App::Init(WINDOW* win) {
   init_pair(MENU_COLOR_PAIR,     COLOR_WHITE,   COLOR_BLUE  );
   init_pair(MENU_SELECTED_PAIR,  COLOR_BLUE,    COLOR_WHITE );
   init_pair(CODE_NEGATIVE_PAIR,  COLOR_BLACK,        -1     );
+  init_pair(HELP_COLOR_PAIR,     COLOR_BLACK,   COLOR_YELLOW);
 
   this->win = win;
 
+  this->helpView = new HelpView();
   this->menuView = new MenuView();
   this->titleMenuView = new TitleMenuView(this->menuView);
   this->codeView = new CodeView(this->matrix, this->editor, this->runner);
@@ -89,12 +93,18 @@ void App::Update(int input) {
     if (getmouse(&event) == OK) {
       bool forwardedToMenu = false;
       if (this->menuView->IsOpen()) {
-       if (this->menuView->bounds->Contains({event.x, event.y})) {
-        this->menuView->MouseInject(event);
+        if (this->menuView->bounds->Contains({event.x, event.y})) {
+          this->menuView->MouseInject(event);
+          forwardedToMenu = true;
+        } else {
+          this->menuView->Close();
+        }
+      }
+      if (this->helpView->IsVisible()) {
+        if (!(this->helpView->bounds->Contains({event.x, event.y}))) {
+          this->helpView->Close();
+        }
         forwardedToMenu = true;
-       } else {
-        this->menuView->Close();
-       }
       }
       if (!forwardedToMenu) {
         if (this->titleMenuView->bounds->Contains({event.x, event.y})) {
@@ -120,6 +130,13 @@ void App::Update(int input) {
   } else if (input == KEY_CTRL_Q) {
     // TODO: Save prompt
     this->Quit();
+
+  } else if (input == KEY_CTRL_H) {
+    if (this->helpView->IsVisible()) {
+      this->helpView->Close();
+    } else {
+      this->helpView->Open();
+    }
 
   } else if (input == KEY_CTRL_R) {
     this->horizontal = !this->horizontal;
@@ -159,6 +176,13 @@ void App::Draw() {
   if (this->cols < 6 || this->rows < 4) {
     clear();
     return;
+  }
+
+  if (this->helpView->IsVisible()) {
+    int half1X = (this->cols - this->helpView->bounds->Width()) / 2;
+    int half1Y = (this->rows - this->helpView->bounds->Height()) / 2;
+    this->helpView->bounds->X(half1X);
+    this->helpView->bounds->Y(half1Y);
   }
 
   // Check BorderPos boundst 0-1
@@ -286,6 +310,7 @@ void App::Draw() {
   }
   this->termView->Update();
   this->menuView->Update();
+  this->helpView->Update();
 
   // Draw Views
   if (this->showCode) this->codeView->Draw();
@@ -294,6 +319,7 @@ void App::Draw() {
   if (this->showStack) this->stackView->Draw();
   this->termView->Draw();
   this->menuView->Draw();
+  if (this->helpView->IsVisible()) this->helpView->Draw();
 
   update_panels();
   doupdate();

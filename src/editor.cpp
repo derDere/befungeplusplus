@@ -143,7 +143,7 @@ void Editor::Inject(int input) {
       i += j + 1;
     }
     this->selection->Width(width);
-    this->selection->Height(count(data.begin(), data.end(), '\n') + 1);
+    this->selection->Height(count(data.begin(), data.end(), '\n') + (data.back()=='\n'?0:1));
     changedSelection = true;
 
   } else if (input == KEY_ALEFT) {
@@ -187,9 +187,22 @@ void Editor::Inject(int input) {
     this->selection->Width(this->selection->Width() + 1);
     changedSelection = true;
 
-  } else if (input == KEY_ENTER) {
+  } else if (input == '\n') {
+    int curx = this->position->X();
+    int x = curx;
+    int spaceCount = 0;
+    while (spaceCount <= 2 && curx >= 0) {
+      int c = this->matrix->Get({curx, this->position->Y()});
+      if (c != ' ') {
+        x = curx;
+        spaceCount = 0;
+      } else {
+        spaceCount++;
+      }
+      curx--;
+    }
     this->position->MvDown();
-    this->position->X(0);
+    this->position->X(x);
 
   } else if (input == KEY_CTRL_T) {
     this->codeView->showCross = !this->codeView->showCross;

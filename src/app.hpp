@@ -14,6 +14,7 @@
 #include "runner.hpp"
 #include "editor.hpp"
 #include "menuview.hpp"
+#include "helpview.hpp"
 
 using namespace std;
 
@@ -32,6 +33,7 @@ namespace BefungePlusPlus
       TerminalView* termView;
       CodeView* codeView;
       MenuView* menuView;
+      HelpView* helpView;
 
       Matrix* matrix;
       Runner* runner;

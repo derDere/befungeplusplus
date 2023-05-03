@@ -6,21 +6,22 @@
 #define KEY_CTRL_SPACE 0 // Ctrl + Space
 #define KEY_CTRL_A 1 // Ctrl + A                   TODO: select all
 #define KEY_CTRL_S 19 // Ctrl + S                  TODO: save
-#define KEY_CTRL_X 24 // Ctrl + X                  TODO: cut
-#define KEY_CTRL_V 22 // Ctrl + V                  TODO: paste
-#define KEY_CTRL_C 3 // Ctrl + C                   TODO: copy
-#define KEY_CTRL_Z 26 // Ctrl + Z                  TODO: undo
-#define KEY_CTRL_Y 25 // Ctrl + Y                  TODO: redo
+#define KEY_CTRL_X 24 // Ctrl + X
+#define KEY_CTRL_V 22 // Ctrl + V
+#define KEY_CTRL_C 3 // Ctrl + C
+#define KEY_CTRL_Z 26 // Ctrl + Z
+#define KEY_CTRL_Y 25 // Ctrl + Y
 #define KEY_CTRL_O 15 // Ctrl + O                  TODO: open
-#define KEY_CTRL_Q 17 // Ctrl + Q                  TODO: quit
-#define KEY_CTRL_T 20 // Ctrl + T                  TODO: make it toggle target mode
-#define KEY_CTRL_R 18 // Ctrl + R                  TODO: make it switch to horizontal mode
+#define KEY_CTRL_Q 17 // Ctrl + Q
+#define KEY_CTRL_T 20 // Ctrl + T
+#define KEY_CTRL_R 18 // Ctrl + R
 #define KEY_CTRL_G 7 // Ctrl + G                   TODO: go to coords
+#define KEY_CTRL_H 8 // Ctrl + H
 
-#define KEY_CTRL_4 28 // Ctrl + 4                  TODO: toggle title view
-#define KEY_CTRL_5 29 // Ctrl + 5                  TODO: toggle code view
-#define KEY_CTRL_6 30 // Ctrl + 6                  TODO: toggle Line view
-#define KEY_CTRL_7 31 // Ctrl + 7                  TODO: toggle stack view
+#define KEY_CTRL_4 28 // Ctrl + 4
+#define KEY_CTRL_5 29 // Ctrl + 5
+#define KEY_CTRL_6 30 // Ctrl + 6
+#define KEY_CTRL_7 31 // Ctrl + 7
 
 #define KEY_SUP 337 // Shift + Up
 #define KEY_SDOWN 336 // Shift + Down

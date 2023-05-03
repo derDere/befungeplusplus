@@ -16,5 +16,6 @@
 #define MENU_COLOR_PAIR 13
 #define MENU_SELECTED_PAIR 14
 #define CODE_NEGATIVE_PAIR 15
+#define HELP_COLOR_PAIR 16
 
 #endif
