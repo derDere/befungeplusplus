@@ -13,7 +13,7 @@ import curses
 import subprocess
 
 
-CMD = './befunge++'
+CMD = 'befunge++'
 
 
 class CursesGuard:
