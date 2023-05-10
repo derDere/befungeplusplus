@@ -27,6 +27,8 @@ namespace BefungePlusPlus
       int cols, rows;
       bool run;
 
+      string filepath;
+
       TitleMenuView* titleMenuView;
       StackView* stackView;
       LineView* lineView;
@@ -61,6 +63,11 @@ namespace BefungePlusPlus
       void Draw();
 
       bool IsRunning();
+
+      void New();
+      void Save();
+      void SaveAs();
+      void Open();
       void Quit();
   };
 }

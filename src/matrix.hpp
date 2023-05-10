@@ -27,6 +27,8 @@ class Matrix {
     vector<ChangeStep>* history;
     vector<ChangeStep>* future;
 
+    bool changed;
+
   public:
     Matrix();
     ~Matrix();
@@ -35,6 +37,9 @@ class Matrix {
     void Set(Point, char, bool = true);
     void Change(Point, char);
     bool Changed(Point);
+
+    bool HasChanges();
+    void SetNoChanges();
 
     int StartX();
     int StartY();

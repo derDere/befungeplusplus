@@ -52,6 +52,7 @@ void Matrix::Set(Point key, char value, bool changeHistory) {
         this->history->erase(this->history->begin());
       }
     }
+    this->changed = true;
   }
 }
 
@@ -77,6 +78,14 @@ bool Matrix::Redo(Point& key) {
     return true;
   }
   return false;
+}
+
+bool Matrix::HasChanges() {
+  return this->changed;
+}
+
+void Matrix::SetNoChanges() {
+  this->changed = false;
 }
 
 void Matrix::Change(Point key, char value) {

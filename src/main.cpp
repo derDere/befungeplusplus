@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ncursesw/ncurses.h>
 #include <unistd.h>
+#include "dialog.hpp"
 //#include <termios.h>
 //#include <signal.h>
 #include "advkeys.hpp"
@@ -33,6 +34,12 @@ App* app = nullptr;
  */
 int main(int argc, const char *argv[])
 {
+  Dialog* dialog = new Dialog();
+  dialog->Show();
+  cin.ignore();
+
+
+
   Config::Reload();
   app = new App();
 

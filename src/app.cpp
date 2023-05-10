@@ -14,6 +14,8 @@ App::App() {
 
   this->run = true;
 
+  this->filepath = "";
+
   this->asciiMode = false;
   this->borderPos = 0.75;
   this->horizontal = true;
@@ -29,6 +31,8 @@ App::App() {
 
 App::~App() {
   this->run = false;
+
+  this->filepath = "";
 
   this->asciiMode = false;
   this->borderPos = 0;
@@ -74,6 +78,8 @@ void App::Init(WINDOW* win) {
   init_pair(MENU_SELECTED_PAIR,  COLOR_BLUE,    COLOR_WHITE );
   init_pair(CODE_NEGATIVE_PAIR,  COLOR_BLACK,        -1     );
   init_pair(HELP_COLOR_PAIR,     COLOR_BLACK,   COLOR_YELLOW);
+  init_pair(DIALOG_COLOR_PAIR,   COLOR_WHITE,   COLOR_BLUE  );
+  // TODO: Red, Green, Blue dialog colors
 
   this->win = win;
 
@@ -163,6 +169,16 @@ void App::Update(int input) {
 
 bool App::IsRunning() {
   return this->run;
+}
+
+void App::New() {
+  if (
+    (this->filepath.length() > 0) &&
+    (this->matrix->HasChanges())
+  ) {
+  }
+  this->matrix->Reset();
+  this->filepath = "";
 }
 
 void App::Quit() {
