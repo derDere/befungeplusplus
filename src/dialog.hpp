@@ -8,10 +8,8 @@
 
 #include "colors.hpp"
 
-#define DIALOG_BUTTONS_OK_ONLY 1
-#define DIALOG_BUTTONS_OK_CANCEL 2
-#define DIALOG_BUTTONS_YES_NO 3
-#define DIALOG_BUTTONS_YES_NO_CANCEL 4
+#define DIALOG_MIN_WIN_WIDTH 26
+#define DIALOG_MAX_WIN_WIDTH 160
 
 using namespace std;
 
@@ -19,17 +17,24 @@ struct DialogButton {
   int id;
   string text;
   char shortcut;
+  int index;
+  bool space;
 };
 
 #define DIALOG_RESULT_OK 1
 #define DIALOG_RESULT_CANCEL 2
-#define DIALOG_RESULT_YES 3
-#define DIALOG_RESULT_NO 4
+#define DIALOG_RESULT_YES 4
+#define DIALOG_RESULT_NO 8
 
-#define DIALOG_OK_BTN { DIALOG_RESULT_OK, "OK", 'o' }
-#define DIALOG_CANCEL_BTN { DIALOG_RESULT_CANCEL, "Cancel", 'c' }
-#define DIALOG_YES_BTN { DIALOG_RESULT_YES, "Yes", 'y' }
-#define DIALOG_NO_BTN { DIALOG_RESULT_NO, "No", 'n' }
+#define DIALOG_BUTTONS_OK_ONLY DIALOG_RESULT_OK
+#define DIALOG_BUTTONS_OK_CANCEL DIALOG_RESULT_OK | DIALOG_RESULT_CANCEL
+#define DIALOG_BUTTONS_YES_NO DIALOG_RESULT_YES | DIALOG_RESULT_NO
+#define DIALOG_BUTTONS_YES_NO_CANCEL DIALOG_RESULT_YES | DIALOG_RESULT_NO | DIALOG_RESULT_CANCEL
+
+#define DIALOG_OK_BTN { DIALOG_RESULT_OK, "OK", 'o', -1, false }
+#define DIALOG_CANCEL_BTN { DIALOG_RESULT_CANCEL, "Cancel", 'c', -1, true }
+#define DIALOG_YES_BTN { DIALOG_RESULT_YES, "Yes", 'y', -1, false }
+#define DIALOG_NO_BTN { DIALOG_RESULT_NO, "No", 'n', -1, true }
 
 struct DialogResult {
   int id;
@@ -42,11 +47,11 @@ class Dialog {
     WINDOW* win;
     PANEL* panel;
     int cols, rows;
-    bool run;
 
     string title;
     string message;
     string value;
+    int colors;
     int buttonType;
 
 
@@ -58,6 +63,10 @@ class Dialog {
     Dialog* Message(string);
     Dialog* Buttons(int);
     Dialog* Value(string);
+    Dialog* ColorDefault();
+    Dialog* ColorInfo();
+    Dialog* ColorWarning();
+    Dialog* ColorError();
 
     DialogResult Show();
 

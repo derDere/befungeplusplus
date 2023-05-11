@@ -5,9 +5,6 @@
 #include <iostream>
 #include <ncursesw/ncurses.h>
 #include <unistd.h>
-#include "dialog.hpp"
-//#include <termios.h>
-//#include <signal.h>
 #include "advkeys.hpp"
 #include "app.hpp"
 #include "config.hpp"
@@ -19,7 +16,6 @@
 using namespace std;
 using namespace BefungePlusPlus;
 
-//void onSignal(int signal);
 void quit();
 void printHelp();
 
@@ -34,12 +30,6 @@ App* app = nullptr;
  */
 int main(int argc, const char *argv[])
 {
-  Dialog* dialog = new Dialog();
-  dialog->Show();
-  cin.ignore();
-
-
-
   Config::Reload();
   app = new App();
 

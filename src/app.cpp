@@ -3,6 +3,7 @@
 
 #include "app.hpp"
 #include "advkeys.hpp"
+#include "dialog.hpp"
 
 using namespace std;
 using namespace BefungePlusPlus;
@@ -78,8 +79,10 @@ void App::Init(WINDOW* win) {
   init_pair(MENU_SELECTED_PAIR,  COLOR_BLUE,    COLOR_WHITE );
   init_pair(CODE_NEGATIVE_PAIR,  COLOR_BLACK,        -1     );
   init_pair(HELP_COLOR_PAIR,     COLOR_BLACK,   COLOR_YELLOW);
-  init_pair(DIALOG_COLOR_PAIR,   COLOR_WHITE,   COLOR_BLUE  );
-  // TODO: Red, Green, Blue dialog colors
+  init_pair(DIALOG_DEFAULT_PAIR, COLOR_WHITE,   COLOR_BLUE  );
+  init_pair(DIALOG_INFO_PAIR,    COLOR_WHITE,   COLOR_GREEN );
+  init_pair(DIALOG_WARNING_PAIR, COLOR_WHITE,   COLOR_YELLOW);
+  init_pair(DIALOG_ERROR_PAIR,   COLOR_WHITE,   COLOR_RED   );
 
   this->win = win;
 
@@ -135,14 +138,31 @@ void App::Update(int input) {
 
   } else if (input == KEY_CTRL_Q) {
     // TODO: Save prompt
+
+    DialogResult r = {0, ""};
+    while(r.id != DIALOG_RESULT_CANCEL) {
+      string msg = "A";
+      msg = (string("R: ") + (char)(r.id + 48)) + " " + msg;
+      r = Dialog::MessageBox()
+                ->Title("Quit?")
+                ->Message(msg)
+                ->Buttons(DIALOG_BUTTONS_YES_NO_CANCEL)
+                ->Show();
+    }
+
     this->Quit();
 
   } else if (input == KEY_CTRL_H) {
-    if (this->helpView->IsVisible()) {
-      this->helpView->Close();
-    } else {
-      this->helpView->Open();
-    }
+    DialogResult r = Dialog::MessageBox()
+                           ->Title("Help")
+                           ->Message("Just Testing some dialogs!")
+                           ->Buttons(DIALOG_BUTTONS_OK_ONLY)
+                           ->Show();
+    //if (this->helpView->IsVisible()) {
+    //  this->helpView->Close();
+    //} else {
+    //  this->helpView->Open();
+    //}
 
   } else if (input == KEY_CTRL_R) {
     this->horizontal = !this->horizontal;
