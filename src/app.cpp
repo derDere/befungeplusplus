@@ -1,6 +1,8 @@
 #ifndef APP_CPP
 #define APP_CPP
 
+#include <iostream>
+
 #include "app.hpp"
 #include "advkeys.hpp"
 #include "dialog.hpp"
@@ -139,25 +141,53 @@ void App::Update(int input) {
   } else if (input == KEY_CTRL_Q) {
     // TODO: Save prompt
 
-    DialogResult r = {0, ""};
-    while(r.id != DIALOG_RESULT_CANCEL) {
-      string msg = "A";
-      msg = (string("R: ") + (char)(r.id + 48)) + " " + msg;
-      r = Dialog::MessageBox()
-                ->Title("Quit?")
-                ->Message(msg)
-                ->Buttons(DIALOG_BUTTONS_YES_NO_CANCEL)
-                ->Show();
-    }
+    //DialogResult r = {0, ""};
+    //while(r.id != DIALOG_RESULT_CANCEL) {
+    //  string msg = "A";
+    //  msg = (string("R: ") + (char)(r.id + 48)) + " " + msg;
+    //  r = Dialog::MessageBox()
+    //            ->Title("Quit?")
+    //            ->Message(msg)
+    //            ->Buttons(DIALOG_BUTTONS_YES_NO_CANCEL)
+    //            ->Show();
+    //}
 
     this->Quit();
 
   } else if (input == KEY_CTRL_H) {
-    DialogResult r = Dialog::MessageBox()
-                           ->Title("Help")
-                           ->Message("Just Testing some dialogs!")
-                           ->Buttons(DIALOG_BUTTONS_OK_ONLY)
-                           ->Show();
+    DialogResult r = {0, ""};
+    while(r.id != DIALOG_RESULT_CANCEL) {
+      string msg = "A Test Dialog";
+      switch (r.id)
+      {
+        case DIALOG_RESULT_OK:
+          msg = string("R: OK / ") + msg;
+          break;
+
+        case DIALOG_RESULT_YES:
+          msg = string("R: YES / ") + msg;
+          break;
+
+        case DIALOG_RESULT_NO:
+          msg = string("R: NO / ") + msg;
+          break;
+
+        default:
+          msg = string("R: - / ") + msg;
+          break;
+      }
+      Dialog* d = new Dialog();
+      d->Input();
+      //d->Value("Test");
+      d->Title("Help ?! No ...");
+      //d->ColorInfo();
+      //d->ColorWarning();
+      d->ColorError();
+      d->Message(msg);
+      d->Buttons(DIALOG_BUTTONS_OK_CANCEL);
+      r = d->Show();
+      delete d;
+    }
     //if (this->helpView->IsVisible()) {
     //  this->helpView->Close();
     //} else {

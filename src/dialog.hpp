@@ -6,6 +6,7 @@
 #include <ncursesw/panel.h>
 #include <ncursesw/ncurses.h>
 
+#include "advkeys.hpp"
 #include "colors.hpp"
 
 #define DIALOG_MIN_WIN_WIDTH 26
@@ -53,7 +54,9 @@ class Dialog {
     string value;
     int colors;
     int buttonType;
+    bool inputActive;
 
+    static int count;
 
   public:
     Dialog();
@@ -67,11 +70,9 @@ class Dialog {
     Dialog* ColorInfo();
     Dialog* ColorWarning();
     Dialog* ColorError();
+    Dialog* Input();
 
     DialogResult Show();
-
-    static Dialog* MessageBox();
-    static Dialog* InputBox();
 };
 
 #endif

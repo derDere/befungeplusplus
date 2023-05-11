@@ -25,6 +25,7 @@
 
 #define KEY_SUP 337 // Shift + Up
 #define KEY_SDOWN 336 // Shift + Down
+#define KEY_SHIFT_TAB 353 // Shift + Tab
 
 #define KEY_CLEFT 549 // Ctrl + Left
 #define KEY_CRIGHT 564 // Ctrl + Right
