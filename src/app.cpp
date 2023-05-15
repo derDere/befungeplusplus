@@ -139,60 +139,14 @@ void App::Update(int input) {
     this->menuView->Close();
 
   } else if (input == KEY_CTRL_Q) {
-    // TODO: Save prompt
-
-    //DialogResult r = {0, ""};
-    //while(r.id != DIALOG_RESULT_CANCEL) {
-    //  string msg = "A";
-    //  msg = (string("R: ") + (char)(r.id + 48)) + " " + msg;
-    //  r = Dialog::MessageBox()
-    //            ->Title("Quit?")
-    //            ->Message(msg)
-    //            ->Buttons(DIALOG_BUTTONS_YES_NO_CANCEL)
-    //            ->Show();
-    //}
-
     this->Quit();
 
   } else if (input == KEY_CTRL_H) {
-    DialogResult r = {0, ""};
-    while(r.id != DIALOG_RESULT_CANCEL) {
-      string msg = "A Test Dialog";
-      switch (r.id)
-      {
-        case DIALOG_RESULT_OK:
-          msg = string("R: OK / ") + msg;
-          break;
-
-        case DIALOG_RESULT_YES:
-          msg = string("R: YES / ") + msg;
-          break;
-
-        case DIALOG_RESULT_NO:
-          msg = string("R: NO / ") + msg;
-          break;
-
-        default:
-          msg = string("R: - / ") + msg;
-          break;
-      }
-      Dialog* d = new Dialog();
-      d->Input();
-      //d->Value("Test");
-      d->Title("Help ?! No ...");
-      //d->ColorInfo();
-      //d->ColorWarning();
-      d->ColorError();
-      d->Message(msg);
-      d->Buttons(DIALOG_BUTTONS_OK_CANCEL);
-      r = d->Show();
-      delete d;
+    if (this->helpView->IsVisible()) {
+      this->helpView->Close();
+    } else {
+      this->helpView->Open();
     }
-    //if (this->helpView->IsVisible()) {
-    //  this->helpView->Close();
-    //} else {
-    //  this->helpView->Open();
-    //}
 
   } else if (input == KEY_CTRL_R) {
     this->horizontal = !this->horizontal;
@@ -231,8 +185,57 @@ void App::New() {
   this->filepath = "";
 }
 
+bool App::Save() {
+  if (this->filepath.length() <= 0) {
+    return this->SaveAs();
+  }
+  // TODO save
+}
+
+bool App::SaveAs() {
+  string path = "./Untitled.be";
+  if (this->filepath.length() > 0) {
+    path = this->filepath;
+  }
+  Dialog* d = new Dialog();
+  d->Title("Save As");
+  d->Message("Enter the path to save the file to:");
+  d->Input(path);
+  d->Buttons(DIALOG_BUTTONS_OK_CANCEL);
+  d->ColorDefault();
+  DialogResult r = d->Show();
+  delete d;
+  if (r.id == DIALOG_RESULT_OK) {
+    this->filepath = r.value;
+    return this->Save();
+  } else {
+    return false;
+  }
+}
+
+void App::Open() {
+  // TODO open
+}
+
 void App::Quit() {
-  this->run = false;
+  if (this->matrix->HasChanges()) {
+    Dialog* d = new Dialog();
+    d->Title("Quit?");
+    d->Message("You have unsaved changes. Do you want to save before quitting?");
+    d->Buttons(DIALOG_BUTTONS_YES_NO_CANCEL);
+    d->ColorWarning();
+    DialogResult r = d->Show();
+    delete d;
+    if (r.id == DIALOG_RESULT_YES) {
+      if (this->Save()) {
+        this->run = false;
+      }
+    } else if (r.id == DIALOG_RESULT_NO) {
+      this->run = false;
+    }
+  } else {
+    this->run = false;
+  }
 }
 
 void App::Draw() {

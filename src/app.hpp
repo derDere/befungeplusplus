@@ -65,8 +65,8 @@ namespace BefungePlusPlus
       bool IsRunning();
 
       void New();
-      void Save();
-      void SaveAs();
+      bool Save();
+      bool SaveAs();
       void Open();
       void Quit();
   };

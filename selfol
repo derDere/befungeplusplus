@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+TMP="$(mktemp)"
+ranger --choosefile="$TMP" 1>&2
+cat $TMP
+rm  -f $TMP

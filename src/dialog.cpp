@@ -295,7 +295,23 @@ DialogResult Dialog::Show() {
         ) {
           selectedIndex = buttons.size() - 1;
         }
-      }else {
+      } else if (input == KEY_UP) {
+        if (this->inputActive) {
+          selectedIndex = -1;
+        }
+      } else if (input == KEY_DOWN) {
+        if (this->inputActive) {
+          selectedIndex = 0;
+        }
+      } else if (input == KEY_LEFT) {
+        if (selectedIndex > 0) {
+          selectedIndex--;
+        }
+      } else if (input == KEY_RIGHT) {
+        if (selectedIndex < buttons.size() - 1) {
+          selectedIndex++;
+        }
+      } else {
         if (selectedIndex == -1) {
           if (input == '\n') {
             selectedIndex = 0;
